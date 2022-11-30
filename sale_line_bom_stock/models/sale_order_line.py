@@ -36,10 +36,8 @@ class sale_line_bom_stock(models.Model):
 
     @api.onchange('product_id')
     def _change_bom_id(self):
-        for rec in self:
-            print(rec.env['mrp.bom'].search([('product_id', '=', rec.product_id.id)]).id)
-            print(rec.product_template_id.id)
-            print(rec.product_id.id)
+        if self.product_id.bom_ids:
+            self.bom_id = min(self.product_id.bom_ids.ids)
 
 
     @api.onchange('bom_id')
